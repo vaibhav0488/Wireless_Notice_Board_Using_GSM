@@ -9,50 +9,33 @@ The system is built using a microcontroller that communicates with a GSM module 
 
 Key Features
 
-Wireless notice board message update using SMS
-
-GSM-based remote communication
-
-Automatic message reception and display
-
-Serial communication between microcontroller and GSM module
-
-Real-time display of received messages
-
-Reduced manual effort for updating notices
+1. Wireless notice board message update using SM
+2. GSM-based remote communication
+3. Automatic message reception and display
+4. Serial communication between microcontroller and GSM module
+5. Real-time display of received messages
+6. Reduced manual effort for updating notices
 
 Technologies and Components Used
 
-Microcontroller-based embedded system
-
-GSM communication module
-
-Serial communication (UART)
-
-Embedded C programming
-
-Display module (LCD or LED display)
-
-Power supply and interfacing circuits
+1. Microcontroller-based embedded system
+2. GSM communication module
+3. Serial communication (UART)
+4. Embedded C programming
+5. Display module (LCD or LED display)
+6. Power supply and interfacing circuits
 
 Working Principle
 
-A user sends a message via SMS to the GSM module attached to the system.
-
-The GSM module receives the SMS using the cellular network.
-
-The microcontroller reads the message using serial communication.
-
-The received message is processed and displayed on the notice board.
+1. A user sends a message via SMS to the GSM module attached to the system.
+2. The GSM module receives the SMS using the cellular network.
+3. The microcontroller reads the message using serial communication.
+4. The received message is processed and displayed on the notice board.
 
 Applications
 
-College and university notice boards
-
-Railway stations and bus terminals
-
-Corporate offices
-
-Public information display systems
-
-Event announcements
+1. College and university notice boards
+2. Railway stations and bus terminals
+3. Corporate offices
+4. Public information display systems
+5. Event announcements
