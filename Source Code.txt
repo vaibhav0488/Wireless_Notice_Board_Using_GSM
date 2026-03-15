@@ -1,0 +1,129 @@
+  #include<Wire.h>
+  #include<LiquidCrystal_I2C.h>
+  #include <SoftwareSerial.h>
+  LiquidCrystal_I2C lcd(0x27, 16, 2);
+  SoftwareSerial gsm(7,8);
+
+  char str[15];
+  char number[15];
+  int i = 0;
+  
+
+  void setup()
+  {
+    
+    // -----------------------------
+    // Turning on LCD
+    // -----------------------------
+      lcd.init();
+      lcd.backlight();
+      lcd.setBacklight(255);
+
+
+
+    // ----------------------------------------------------------
+    // Setting up the GSM 900A module to recieve message
+    // ----------------------------------------------------------
+      Serial.begin(9600);
+      gsm.begin(9600);
+      Serial.println("AT+CNMI=2,2,0,0,0");
+      delay(2000);
+
+      
+      Serial.println("AT+CMGF=1");
+      delay(1000);
+
+  }
+
+  void loop()
+  {
+    // ----------------------------------------------------------
+    // Checking for the message is recieved or not
+    // ----------------------------------------------------------
+    if (Serial.find("#"))
+      {
+        i = 0; 
+      }
+    delay(1000);
+
+    // -----------------------------
+    // Displaying welcome on LCD
+    // -----------------------------
+      lcd.setCursor(0,1);
+      lcd.print("Hello Everyone");
+      delay(3000);
+
+      lcd.clear();
+      lcd.print("Welcome...");
+      delay(3000);
+
+  }
+
+  void serialEvent()
+{
+    // -----------------------------
+    // FIRST: Extract sender number
+    // -----------------------------
+    if (Serial.find("+CMT:"))
+    {
+        if (Serial.find("\""))
+        {
+            int j = 0;
+            while (Serial.available())
+            {
+                char c = Serial.read();
+                if (c == '"') break;
+                number[j++] = c;
+            }
+            number[j] = '\0';  // phone number ready
+        }
+    }
+
+    // -----------------------------
+    // SECOND: Extract message (#text*)
+    // -----------------------------
+    if (Serial.find("#"))
+    {
+        i = 0; // reset buffer
+
+        while (Serial.available())
+        {
+            char inChar = Serial.read();
+
+            if (inChar != '*')
+            {
+                str[i++] = inChar;
+                str[i] = '\0';
+            }
+
+            if (inChar == '*')
+            {
+                // Print message to Serial
+                Serial.println((String)str);
+
+                // Display message on LCD
+                lcd.clear();
+                lcd.print((String)str);
+
+                // -----------------------------
+                // THIRD: Send reply SMS
+                // -----------------------------
+                Serial.println("AT+CMGF=1");
+                delay(1000);
+
+                Serial.print("AT+CMGS=\"");
+                Serial.print(number);  
+                Serial.println("\"");
+                delay(1000);
+
+                Serial.println("Message received successfully...");
+                delay(500);
+
+                Serial.write(26); // CTRL+Z to send SMS
+                delay(2000);
+
+                return; // done with this SMS
+            }
+        }
+    }
+}
